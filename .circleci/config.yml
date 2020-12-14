@@ -1,32 +1,46 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-# Use a package of configuration called an orb.
 orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-  job1: circleci/welcome-orb@0.4.1
-  job2: circleci/welcome-orb@0.4.1
-  job3: circleci/welcome-orb@0.4.1
-  job4: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+    docker: circleci/docker@1.0.1
+jobs:
+    build:
+        docker:
+            - image: node:current-alpine
+        steps:
+            - run:
+                  name: Build
+                  command: echo $CIRCLE_BUILD_NUM
+    deploy-dev:
+        machine:
+            image: ubuntu-1604:202004-01
+        steps:
+            - run:
+                  name: Version Number
+                  command: echo $(cat version.txt)
+    deploy-qa:
+        machine:
+            image: ubuntu-1604:202004-01
+        steps:
+            - run:
+                  name: Version Number
+                  command: echo $(cat version.txt)
+    deploy-prod:
+        machine:
+            image: ubuntu-1604:202004-01
+        steps:
+            - run:
+                  name: Version Number
+                  command: echo $(cat version.txt)
 workflows:
-  # Name the workflow "welcome"
-  build:
-    jobs:
-      - job1/run
-  Dev:
-    jobs:
-      - job2/run:
-             requires:
-                - job1
-  QA:
-    jobs:
-      - job3/run:  
-          requires:
-                - job2
-  Prod:
-    jobs:
-      - job4/run:
-              requires:
-                  - job3
-
+    version: 2
+    build-workfow:
+        jobs:
+            - build
+            - deploy-dev:
+                requires:
+                  - build
+            - deploy-qa:
+                  requires:
+                      - deploy-dev
+            - deploy-prod:
+                  requires:
+                      - deploy-qa
