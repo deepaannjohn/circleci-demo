@@ -8,19 +8,21 @@ orbs:
 workflows:
   # Name the workflow "welcome"
   build:
-    # Run the welcome/run job in its own container
     jobs:
       - welcome/run
   Dev:
-    # Run the welcome/run job in its own container
+    requires:
+      - build
     jobs:
       - welcome/run
   QA:
-    # Run the welcome/run job in its own container
+    requires:
+      - Dev
     jobs:
       - welcome/run
   Prod:
-    # Run the welcome/run job in its own container
+    requires:
+      - QA
     jobs:
       - welcome/run
 
