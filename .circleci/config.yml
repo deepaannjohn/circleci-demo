@@ -11,18 +11,18 @@ workflows:
     jobs:
       - welcome/run
   Dev:
-    requires:
-      - build
     jobs:
-      - welcome/run
+      - welcome/run:
+             requires:
+                - build
   QA:
-    requires:
-      - Dev
     jobs:
-      - welcome/run
+      - welcome/run:  
+          requires:
+                - Dev
   Prod:
-    requires:
-      - QA
     jobs:
-      - welcome/run
+      - welcome/run:
+              requires:
+                  - QA
 
