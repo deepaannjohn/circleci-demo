@@ -18,15 +18,15 @@ workflows:
     jobs:
       - job2/run:
              requires:
-                - job1/run
+                - job1
   QA:
     jobs:
       - job3/run:  
           requires:
-                - job2/run
+                - job2
   Prod:
     jobs:
       - job4/run:
               requires:
-                  - job3/run
+                  - job3
 
