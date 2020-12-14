@@ -4,26 +4,29 @@ version: 2.1
 orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.4.1
+  job1: circleci/welcome-orb@0.4.1
   job2: circleci/welcome-orb@0.4.1
+  job3: circleci/welcome-orb@0.4.1
+  job4: circleci/welcome-orb@0.4.1
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
   build:
     jobs:
-      - welcome/run
+      - job1/run
   Dev:
     jobs:
-      - welcome/run:
+      - job2/run:
              requires:
-                - build
+                - job1/run
   QA:
     jobs:
-      - welcome/run:  
+      - job3/run:  
           requires:
-                - Dev
+                - job2/run
   Prod:
     jobs:
-      - welcome/run:
+      - job4/run:
               requires:
-                  - QA
+                  - job3/run
 
